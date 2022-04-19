@@ -3,17 +3,17 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { DropFactoryProvider } from "./context/DropFactory";
+import { StakeManagerProvider } from "./context/StakeManager";
 import { WalletProvider } from "./context/Wallet";
 import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
   <WalletProvider>
-    <DropFactoryProvider>
+    <StakeManagerProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </DropFactoryProvider>
+    </StakeManagerProvider>
   </WalletProvider>,
   document.getElementById("root")
 );
