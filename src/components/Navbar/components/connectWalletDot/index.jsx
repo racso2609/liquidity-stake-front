@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import WalletContext from "../../../../context/Wallet";
+import { Text } from "../../../../GlobalStyles/styles";
 
 const Connected = ({ currentAccount }) => {
-  return <span>{currentAccount.slice(0, 10)}</span>;
+  return <Text>{currentAccount.slice(0, 10)}</Text>;
 };
 
 const Disconnected = ({ connectWalletHandler }) => {
