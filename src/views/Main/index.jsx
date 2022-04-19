@@ -17,10 +17,11 @@ const ConnectWalletButton = () => {
 
 const Main = () => {
   const { currentAccount } = useContext(WalletContext);
-  const { poolTokens, stakingContract } = useContext(StakeManagerContext);
+  const { poolTokens, stakingManager } = useContext(StakeManagerContext);
   return (
     <div className="main-app">
       <h1>add liquidity {poolTokens}</h1>
+      <span>{stakingManager?.address}</span>
       {currentAccount ? <span>add liquidity</span> : <ConnectWalletButton />}
     </div>
   );

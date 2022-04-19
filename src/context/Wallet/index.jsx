@@ -20,7 +20,7 @@ export function WalletProvider({ children }) {
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
-      if (!accounts.length) return alert("authorized account nor found");
+      if (!accounts.length) return alert("authorized account not found");
       setCurrentAccount(accounts[0]);
     } catch (error) {
       return alert(error.message);

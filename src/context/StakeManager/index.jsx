@@ -9,6 +9,7 @@ export function StakeManagerProvider({ children }) {
   const { signer } = useContext(WalletContext);
   const [stakingManager, setStakingManager] = useState(null);
   const [poolTokens, setPoolTokens] = useState([]);
+
   const address = stakingManagerInfo.address;
   const abi = stakingManagerInfo.abi;
 
@@ -19,13 +20,17 @@ export function StakeManagerProvider({ children }) {
 
   useEffect(() => {
     (async () => {
-      console.log("second", stakingManager.poolsAmounts());
-      if (stakingManager) setPoolTokens(await stakingManager?.poolsAmounts());
+      const poolsNumber = await stakingManager?.poolsAmounts();
+      if (stakingManager) setPoolTokens(poolsNumber.toString());
     })();
   }, [stakingManager]);
 
+  const deploy = () => {};
+
   return (
-    <StakeManagerContext.Provider value={{ address, abi, stakingManager }}>
+    <StakeManagerContext.Provider
+      value={{ address, abi, stakingManager, poolTokens }}
+    >
       {children}
     </StakeManagerContext.Provider>
   );
