@@ -70,4 +70,8 @@ const tokens = {
   ],
 };
 
-export { tokens };
+const getToken = (networkId, symbol) => {
+  return tokens[networkId].find((token) => token.symbol === symbol);
+};
+
+export { tokens, getToken };

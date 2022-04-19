@@ -5,6 +5,7 @@ const WalletContext = createContext();
 
 export function WalletProvider({ children }) {
   const [currentAccount, setCurrentAccount] = useState(null);
+  const [roles, setRoles] = useState({ stakeAdmin: false });
   const [signer, setSigner] = useState(null);
 
   const checkWalletIsConnected = () => {
@@ -40,7 +41,7 @@ export function WalletProvider({ children }) {
 
   return (
     <WalletContext.Provider
-      value={{ signer, currentAccount, connectWalletHandler }}
+      value={{ signer, currentAccount, connectWalletHandler, roles, setRoles }}
     >
       {children}
     </WalletContext.Provider>
