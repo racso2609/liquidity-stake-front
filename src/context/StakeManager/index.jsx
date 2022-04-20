@@ -13,6 +13,8 @@ export function StakeManagerProvider({ children }) {
 
   const [stakingManager, setStakingManager] = useState(null);
   const [poolTokens, setPoolTokens] = useState([]);
+  const [poolAddress, setPoolAddress] = useState([]);
+  const [availablePools, setAvailablePools] = useState([]);
 
   const address = stakingManagerInfo.address;
   const abi = stakingManagerInfo.abi;
@@ -28,6 +30,7 @@ export function StakeManagerProvider({ children }) {
       if (stakingManager) setPoolTokens(poolsNumber.toString());
     })();
   }, [stakingManager]);
+
   useEffect(() => {
     (async () => {
       if (stakingManager) {
@@ -41,10 +44,27 @@ export function StakeManagerProvider({ children }) {
       }
     })();
   }, [stakingManager, currentAccount, setRoles]);
+  useEffect(() => {
+    (async () => {
+      const allPools = [];
+      const allAvailableTokenPools = [];
+      for (let i = 0; i < poolTokens; i++) {
+        const address = await stakingManager.stakingTokens(i);
+        const pool = await stakingManager.stakingRewardsTokenInfo(address);
+        allPools.push({
+          address: pool.stakingRewards.toString().toLowerCase(),
+          token: address,
+        });
+        allAvailableTokenPools.push(address);
+      }
+      setPoolAddress(allPools);
+      setAvailablePools(allAvailableTokenPools);
+    })();
+  }, [poolTokens]);
 
   const deploy = async ({ stakeToken, rewardAmount }) => {
     try {
-      const rewardDuration = (Date.now / 1000) * 60 * 60 * 5 * 24;
+      const rewardDuration = 60 * 60 * 24 * 5;
       const uniswap = getContract(process.env.REACT_APP_NETWORK_ID, "UNISWAP");
       const uniswapFactory = getContract(
         process.env.REACT_APP_NETWORK_ID,
@@ -63,13 +83,11 @@ export function StakeManagerProvider({ children }) {
           uniswapFactory.address
         );
       await tx.wait();
-      console.log(tx);
       notify({
         type: "success",
         message: "Pool created",
       });
     } catch (error) {
-      console.log(error);
       notify({
         type: "error",
         message: error.message,
@@ -80,7 +98,15 @@ export function StakeManagerProvider({ children }) {
 
   return (
     <StakeManagerContext.Provider
-      value={{ address, abi, stakingManager, poolTokens, deploy }}
+      value={{
+        address,
+        abi,
+        poolAddress,
+        availablePools,
+        stakingManager,
+        poolTokens,
+        deploy,
+      }}
     >
       {children}
     </StakeManagerContext.Provider>

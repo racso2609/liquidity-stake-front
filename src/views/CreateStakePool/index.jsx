@@ -17,7 +17,6 @@ export default function CreateStackPool() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(selectToken.value, rewardAmount.value);
     if (!selectToken.value || !rewardAmount.value)
       return notify({ type: "error", message: "fill all fields" });
     const data = {
