@@ -43,3 +43,11 @@ export const Select = styled.select`
   margin: ${(props) => props.margin};
   width: 100%;
 `;
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: ${(props) => props.direction || "column"};
+  justify-content: ${(props) => props.justify};
+  align-items: ${(props) => props.align};
+  flex-wrap: ${(props) => props.wrap || "wrap"};
+`;

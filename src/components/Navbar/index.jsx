@@ -9,6 +9,7 @@ const navItems = [
   { pathname: "/", label: "home" },
   { pathname: "/add-liquidity", label: "Add liquidity" },
   { pathname: "/stake", label: "Stake" },
+  { pathname: "/balance", label: "Balance" },
 ];
 
 const managerAdminNavItems = [

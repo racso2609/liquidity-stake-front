@@ -35,11 +35,7 @@ const tokens = {
       symbol: "WETH",
       address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     },
-    {
-      decimals: 18,
-      symbol: "UDAI",
-      address: "0xA478c2975Ab1Ea89e8196811F51A7B7Ade33eB11",
-    },
+
     {
       decimals: 18,
       symbol: "ULINK",
@@ -47,16 +43,6 @@ const tokens = {
     },
   ],
   [4]: [
-    {
-      decimals: 18,
-      symbol: "DAI",
-      address: "0x95b58a6Bff3D14B7DB2f5cb5F0Ad413DC2940658",
-    },
-    {
-      decimals: 18,
-      symbol: "UDAI",
-      address: "0xA478c2975Ab1Ea89e8196811F51A7B7Ade33eB11",
-    },
     {
       decimals: 18,
       symbol: "WETH",
@@ -67,11 +53,16 @@ const tokens = {
       symbol: "ULINK",
       address: "0xa2107FA5B38d9bbd2C461D6EDf11B11A50F6b974",
     },
+    {
+      decimals: 18,
+      symbol: "LINK",
+      address: "0x01BE23585060835E02B77ef475b0Cc51aA1e0709",
+    },
   ],
 };
 
-const getToken = (networkId, symbol) => {
-  return tokens[networkId].find((token) => token.symbol === symbol);
+const getToken = (networkId, symbol, attribute = "symbol") => {
+  return tokens[networkId].find((token) => token[attribute] === symbol);
 };
 
 export { tokens, getToken };

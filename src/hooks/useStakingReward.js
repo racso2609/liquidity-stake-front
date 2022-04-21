@@ -26,14 +26,14 @@ export default function useReward({ address }) {
   const liquidityAndStake = async ({ tokenB, ethAmount }) => {
     try {
       const tokenContract = new ethers.Contract(
-        getToken(process.env.REACT_APP_NETWORK_ID, "UDAI").address,
+        getToken(process.env.REACT_APP_NETWORK_ID, tokenB, "address").address,
         erc20Abi.abi,
         signer
       );
       let tx = await tokenContract
         .connect(signer)
         .approve(reward.address, ethers.utils.parseEther("100"));
-      tx = await reward.addLiquidityAndStake(tokenB, {
+      tx = await reward.addLiquidityEth(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
         gasLimit: 750000,
       });
@@ -51,6 +51,8 @@ export default function useReward({ address }) {
       });
     }
   };
+
+  const grantAllowance = () => {};
 
   return {
     reward,
