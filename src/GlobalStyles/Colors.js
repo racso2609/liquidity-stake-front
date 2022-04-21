@@ -1,8 +1,8 @@
 const Colors = {
-  background: "#fff",
-  card: "#f0f0f0",
+  background: "#131516",
+  card: "#202324",
   active: "blue",
-  foreground: "black",
+  foreground: "white",
   foreground2: "pink",
 };
 

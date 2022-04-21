@@ -12,6 +12,11 @@ export const Text = styled.span`
   display: ${(props) => props.display};
   font-size: ${(props) => props.fontSize};
 `;
+export const H1 = styled.h1`
+  color: ${(props) => getColor(props.color || "foreground")};
+  display: ${(props) => props.display};
+  font-size: ${(props) => props.fontSize};
+`;
 
 export const Input = styled.input`
   all: unset;
@@ -23,11 +28,13 @@ export const Input = styled.input`
   padding: 10px;
   margin: ${(props) => props.margin};
   width: 100%;
+  color: ${(props) => getColor(props.color || "foreground")};
 `;
 
 export const Select = styled.select`
   all: unset;
   max-width: 90%;
+  color: ${(props) => getColor(props.color || "foreground")};
   background-color: ${(props) => getColor(props.background || "card")};
   border-radius: 10px;
   border: 1px solid white;
