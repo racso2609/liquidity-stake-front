@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Input, Select } from "../../GlobalStyles/styles";
+import { Input, Select, H1 } from "../../GlobalStyles/styles";
 import { LiquidityContainer, Container } from "./styles";
 import { tokens } from "../../functions/tokens";
 import useForm from "../../hooks/useForm";
@@ -30,7 +30,7 @@ export default function AddLiquidity() {
     <LiquidityContainer>
       <Container>
         <form onSubmit={handleSubmit}>
-          <h1 style={{ textAlign: "center" }}>Add liquidity - ETH / TOKEN</h1>
+          <H1 style={{ textAlign: "center" }}>Add liquidity - ETH / TOKEN</H1>
           <Input margin="20px auto" {...ethAmount} />
           <Select margin="20px auto" {...tokenSelect}>
             <option>Select a token from the list</option>

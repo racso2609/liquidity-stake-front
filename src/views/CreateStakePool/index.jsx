@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { StakeContainer, Container } from "./styles";
 import StakeManagerContext from "../../context/StakeManager";
 import useForm from "../../hooks/useForm";
-import { Select, Input } from "../../GlobalStyles/styles";
+import { Select, Input, H1 } from "../../GlobalStyles/styles";
 import { tokens } from "../../functions/tokens";
 import { notify } from "../../utils/notify";
 
@@ -30,7 +30,7 @@ export default function CreateStackPool() {
     <StakeContainer>
       <Container>
         <form onSubmit={handleSubmit}>
-          <h1>Create pool</h1>
+          <H1>Create pool</H1>
           <Select {...selectToken}>
             <option>Select stake token</option>
             {tokenList.map((token) => (

@@ -4,7 +4,7 @@ import WalletContext from "../context/Wallet";
 import { ethers } from "ethers";
 import { notify } from "../utils/notify";
 import useToggle from "../hooks/useToggle";
-import erc20Abi from "../contracts/ERC20.json";
+import erc20Abi from "../contracts/RewardToken.json";
 import { getToken } from "../functions/tokens";
 
 export default function useReward({ address }) {
