@@ -110,18 +110,16 @@ export function StakeManagerProvider({ children }) {
   };
 
   const notifyRewardAmount = async ({ stakeToken }) => {
-    try{
+    try {
       const tx = await stakingManager
         .connect(signer)
-        .notifyRewardAmount(
-          stakeToken,
-      );
+        .notifyRewardAmount(stakeToken);
       await tx.wait();
       notify({
         type: "success",
         message: "notifyRewardAmount successful",
       });
-    }catch(error) {
+    } catch (error) {
       notify({
         type: "error",
         message: error.message,

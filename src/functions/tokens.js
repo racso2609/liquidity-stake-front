@@ -50,8 +50,18 @@ const tokens = {
     },
     {
       decimals: 18,
+      symbol: "UDAI",
+      address: "0x3748AADb92ac853A21339DAAbfb2D5c2396f0FF1",
+    },
+    {
+      decimals: 18,
+      symbol: "DAI",
+      address: "0x95b58a6Bff3D14B7DB2f5cb5F0Ad413DC2940658",
+    },
+    {
+      decimals: 18,
       symbol: "ULINK",
-      address: "0xa2107FA5B38d9bbd2C461D6EDf11B11A50F6b974",
+      address: "0x4B41c8F7531B521AA648910698d12fA53B9e0ac1",
     },
     {
       decimals: 18,
