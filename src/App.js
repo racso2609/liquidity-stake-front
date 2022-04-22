@@ -8,6 +8,7 @@ import Balance from "./views/CheckBalances";
 import Unstake from "./views/Unstake";
 import ClaimRewards from "./views/ClaimRewards";
 import Notify from "./views/Notify";
+import AddAdmin from "./views/AddAdmin";
 import "./App.css";
 import WalletContext from "./context/Wallet";
 
@@ -28,7 +29,10 @@ function App() {
           </>
         )}
         {roles.stakeAdmin && (
-          <Route element={<CreateStackPool />} path="/create-stake-pool" />
+          <>
+            <Route element={<CreateStackPool />} path="/create-stake-pool" />
+            <Route element={<AddAdmin />} path="/add-admin" />
+          </>
         )}
       </Routes>
     </>

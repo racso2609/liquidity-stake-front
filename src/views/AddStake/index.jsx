@@ -14,6 +14,9 @@ export default function AddLiquidity() {
   const { poolAddress } = useContext(StakeManagerContext);
   const { liquidityAndStake } = useReward({
     address: selectedPool.value ? JSON.parse(selectedPool.value).address : "",
+    erc20Address: selectedPool.value
+      ? JSON.parse(selectedPool.value).lpToken
+      : "",
   });
 
   const handleSubmit = async (e) => {
@@ -22,7 +25,6 @@ export default function AddLiquidity() {
 
     const data = {
       tokenB: JSON.parse(selectedPool.value).token,
-      lpToken: JSON.parse(selectedPool.value).lpToken,
       ethAmount: ethAmount.value,
     };
     await liquidityAndStake(data);

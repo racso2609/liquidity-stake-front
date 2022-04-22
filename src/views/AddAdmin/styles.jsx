@@ -1,13 +1,8 @@
+import { Container } from "../../GlobalStyles/styles";
 import styled from "styled-components";
 import { getColor } from "../../GlobalStyles/Colors";
 
-export const StakeContainer = styled.div`
-  min-height: 90vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-export const Container = styled.div`
+export const ContainerForm = styled(Container)`
   form {
     background-color: ${(props) => getColor(props.background || "card")};
     width: 500px;

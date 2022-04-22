@@ -130,6 +130,23 @@ export function StakeManagerProvider({ children }) {
     }
   };
 
+  const setAdmin = async (user) => {
+    try {
+      const tx = await stakingManager.setAdmin(user, { gasPrice: 750000 });
+      await tx.wait();
+
+      notify({
+        type: "success",
+        message: "Adding admin",
+      });
+    } catch (error) {
+      notify({
+        type: "error",
+        message: error.message,
+        title: "Fail adding admin",
+      });
+    }
+  };
   const getPool = async (tokenAddress) => {
     try {
       const stake = await stakingManager.stakingRewardsTokenInfo(tokenAddress);
@@ -152,6 +169,7 @@ export function StakeManagerProvider({ children }) {
         deploy,
         notifyRewardAmount,
         getPool,
+        setAdmin,
       }}
     >
       {children}

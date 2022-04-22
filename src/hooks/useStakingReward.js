@@ -6,12 +6,12 @@ import { notify } from "../utils/notify";
 import useToggle from "../hooks/useToggle";
 import useERC20 from "../hooks/useErc20";
 
-export default function useReward({ address }) {
+export default function useReward({ address, erc20Address }) {
   const { signer, currentAccount } = useContext(WalletContext);
   const [reward, setReward] = useState();
   const loading = useToggle();
   const { createContract: createErc20Contract, approve: erc20Approve } =
-    useERC20({});
+    useERC20({ address: erc20Address });
 
   const abi = stakeReward.abi;
 
@@ -21,16 +21,24 @@ export default function useReward({ address }) {
     }
   }, [signer, address]);
 
+  useEffect(() => {
+    if (erc20Address && signer) {
+      createErc20Contract(erc20Address);
+    }
+  }, [signer, erc20Address]);
+
   const createContract = (contractAddress) => {
     const stakeContract = new ethers.Contract(contractAddress, abi, signer);
     setReward(stakeContract);
   };
 
-  const liquidityAndStake = async ({ tokenB, ethAmount, lpToken }) => {
+  const liquidityAndStake = async ({ tokenB, ethAmount }) => {
     try {
       if (!reward) return;
-      createErc20Contract(lpToken);
-      erc20Approve(reward.address, ethers.utils.parseEther("100"));
+      await erc20Approve({
+        to: reward.address,
+        amount: ethers.utils.parseEther("100"),
+      });
 
       const tx = await reward.addLiquidityAndStake(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
@@ -96,7 +104,6 @@ export default function useReward({ address }) {
   const balanceOf = async () => {
     try {
       if (!reward) return;
-      console.log(reward.address);
       const balance = await reward.balanceOf(currentAccount);
       return balance.toString();
     } catch (error) {

@@ -52,7 +52,11 @@ export const Container = styled.div`
   flex-wrap: ${(props) => props.wrap || "wrap"};
   width: ${(props) => props.width};
   max-width: ${(props) => props.maxWidth};
+  min-width: ${(props) => props.minWidth};
+  min-height: ${(props) => props.minHeight};
   margin: ${(props) => props.margin};
+  padding: ${(props) => props.padding};
+  background: ${(props) => getColor(props.background || "transparent")};
 `;
 
 export const Button = styled.button`
