@@ -5,6 +5,9 @@ import AddStake from "./views/AddStake";
 import Navbar from "./components/Navbar";
 import CreateStackPool from "./views/CreateStakePool";
 import Balance from "./views/CheckBalances";
+import Unstake from "./views/Unstake";
+import ClaimRewards from "./views/ClaimRewards";
+import Notify from "./views/Notify";
 import "./App.css";
 import WalletContext from "./context/Wallet";
 
@@ -18,7 +21,10 @@ function App() {
         {currentAccount && (
           <>
             <Route element={<AddStake />} path="/add-stake" />
+            <Route element={<Unstake />} path="/unstake" />
+            <Route element={<ClaimRewards />} path="/claim-rewards" />
             <Route element={<Balance />} path="/balance" />
+            <Route element={<Notify />} path="/notify" />
           </>
         )}
         {roles.stakeAdmin && (

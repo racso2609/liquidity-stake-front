@@ -51,6 +51,48 @@ export default function useReward({ address }) {
     }
   };
 
+  const unstake = async ({ lpToken, lpAmount }) => {
+    try{
+      if(!reward) return;
+      createErc20Contract(lpToken);
+      
+      const tx = await reward.unstake(lpAmount);
+      await tx.wait();
+      notify({
+        type: "success",
+        message: "Unstake complete ",
+      });
+    } catch(error) {
+      console.log(error);
+      notify({
+        type: "error",
+        message: error.message,
+        title: "Fail making tx unstake",
+      });
+    }
+  };
+
+  const claimRewards = async ({ lpToken }) => {
+    try{
+      if(!reward) return;
+      createErc20Contract(lpToken);
+
+      const tx = await reward.claimRewards();
+      await tx.wait();
+      notify({
+        type: "success",
+        message: "Claim Rewards complete",
+      });
+    }catch(error) {
+      console.log(error);
+      notify({
+        type: "error",
+        message: error.message,
+        title: "Fail making tx claim rewards",
+      });
+    }
+  };
+
   const balanceOf = async () => {
     try {
       if (!reward) return;
@@ -66,6 +108,8 @@ export default function useReward({ address }) {
     liquidityAndStake,
     loading,
     balanceOf,
+    unstake,
+    claimRewards,
     createContract,
   };
 }

@@ -108,6 +108,28 @@ export function StakeManagerProvider({ children }) {
       });
     }
   };
+
+  const notifyRewardAmount = async ({ stakeToken }) => {
+    try{
+      const tx = await stakingManager
+        .connect(signer)
+        .notifyRewardAmount(
+          stakeToken,
+      );
+      await tx.wait();
+      notify({
+        type: "success",
+        message: "notifyRewardAmount successful",
+      });
+    }catch(error) {
+      notify({
+        type: "error",
+        message: error.message,
+        title: "Fail tx notifyRewardAmount",
+      });
+    }
+  };
+
   const getPool = async (tokenAddress) => {
     try {
       const stake = await stakingManager.stakingRewardsTokenInfo(tokenAddress);
@@ -128,6 +150,7 @@ export function StakeManagerProvider({ children }) {
         stakingManager,
         poolTokens,
         deploy,
+        notifyRewardAmount,
         getPool,
       }}
     >

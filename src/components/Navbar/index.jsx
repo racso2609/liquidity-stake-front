@@ -19,6 +19,9 @@ const managerAdminNavItems = [
 const userItems = [
   { pathname: "/add-stake", label: "Add stake" },
   { pathname: "/balance", label: "Balance" },
+  { pathname: "/unstake", label: "Unstake" },
+  { pathname: "/claim-rewards", label: "Claim Rewards" },
+  { pathname: "/notify", label: "Notify" },
 ];
 
 export default function NavBar() {
