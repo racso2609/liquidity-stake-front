@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import erc20Abi from "../contracts/RewardToken.json";
 import WalletContext from "../context/Wallet";
 import { ethers } from "ethers";
-import { notify } from "../utils/notify";
 const abi = erc20Abi.abi;
 
 export default function useERC20({ address }) {
@@ -36,20 +35,7 @@ export default function useERC20({ address }) {
     }
   };
   const approve = async ({ to, amount }) => {
-    try {
-      if (contract) {
-        const balance = await contract.connect(signer).approve(to, amount);
-        return balance.toString();
-      }
-      return 0;
-    } catch (error) {
-      notify({
-        type: "error",
-        message: error.message,
-        title: "fail allowance",
-      });
-      return error.message;
-    }
+    await contract.connect(signer).approve(to, amount);
   };
 
   return { abi, erc20Contract: contract, balanceOf, approve, createContract };
