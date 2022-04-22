@@ -5,6 +5,7 @@ import AddStake from "./views/AddStake";
 import Navbar from "./components/Navbar";
 import CreateStackPool from "./views/CreateStakePool";
 import Balance from "./views/CheckBalances";
+import AddAdmin from "./views/AddAdmin";
 import "./App.css";
 import WalletContext from "./context/Wallet";
 
@@ -22,7 +23,10 @@ function App() {
           </>
         )}
         {roles.stakeAdmin && (
-          <Route element={<CreateStackPool />} path="/create-stake-pool" />
+          <>
+            <Route element={<CreateStackPool />} path="/create-stake-pool" />
+            <Route element={<AddAdmin />} path="/add-admin" />
+          </>
         )}
       </Routes>
     </>

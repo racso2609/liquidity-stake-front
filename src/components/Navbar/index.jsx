@@ -14,6 +14,7 @@ const navItems = [{ pathname: "/", label: "home" }];
 // items available id you are a admin of stake manage
 const managerAdminNavItems = [
   { pathname: "/create-stake-pool", label: "Create stake pool" },
+  { pathname: "/add-admin", label: "Add Admin" },
 ];
 // items available when connect wallet
 const userItems = [
