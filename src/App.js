@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Main from "./views/Main";
-import Liquidity from "./views/AddLiquidity";
+import AddStake from "./views/AddStake";
 import Navbar from "./components/Navbar";
 import CreateStackPool from "./views/CreateStakePool";
 import Balance from "./views/CheckBalances";
@@ -17,7 +17,7 @@ function App() {
         <Route element={<Main />} path="/" />
         {currentAccount && (
           <>
-            <Route element={<Liquidity />} path="/add-liquidity" />
+            <Route element={<AddStake />} path="/add-stake" />
             <Route element={<Balance />} path="/balance" />
           </>
         )}

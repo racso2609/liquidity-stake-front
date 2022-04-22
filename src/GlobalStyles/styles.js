@@ -20,11 +20,11 @@ export const H1 = styled.h1`
 
 export const Input = styled.input`
   all: unset;
-  max-width: 90%;
   background-color: ${(props) => getColor(props.background || "card")};
   border-radius: 10px;
   border: 1px solid white;
   display: block;
+  max-width: 90%;
   padding: 10px;
   margin: ${(props) => props.margin};
   width: 100%;
@@ -33,7 +33,6 @@ export const Input = styled.input`
 
 export const Select = styled.select`
   all: unset;
-  max-width: 90%;
   color: ${(props) => getColor(props.color || "foreground")};
   background-color: ${(props) => getColor(props.background || "card")};
   border-radius: 10px;
@@ -42,6 +41,7 @@ export const Select = styled.select`
   padding: 10px;
   margin: ${(props) => props.margin};
   width: 100%;
+  max-width: 90%;
 `;
 
 export const Container = styled.div`
@@ -50,4 +50,23 @@ export const Container = styled.div`
   justify-content: ${(props) => props.justify};
   align-items: ${(props) => props.align};
   flex-wrap: ${(props) => props.wrap || "wrap"};
+  width: ${(props) => props.width};
+  max-width: ${(props) => props.maxWidth};
+  margin: ${(props) => props.margin};
+`;
+
+export const Button = styled.button`
+  all: unset;
+  color: ${(props) => getColor(props.color || "foreground")};
+  background: ${(props) => getColor(props.background || "active")};
+  border-radius: 15px;
+  padding: ${(props) => props.padding || "10px"};
+  text-align: center;
+  margin: ${(props) => props.margin};
+  transition-timing-function: ease;
+  width: ${(props) => props.width || "90%"};
+  transition: 1s;
+  :hover {
+    opacity: 0.8;
+  }
 `;

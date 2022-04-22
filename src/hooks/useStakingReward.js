@@ -4,36 +4,36 @@ import WalletContext from "../context/Wallet";
 import { ethers } from "ethers";
 import { notify } from "../utils/notify";
 import useToggle from "../hooks/useToggle";
-import erc20Abi from "../contracts/RewardToken.json";
-import { getToken } from "../functions/tokens";
+import useERC20 from "../hooks/useErc20";
 
 export default function useReward({ address }) {
-  const { signer } = useContext(WalletContext);
+  const { signer, currentAccount } = useContext(WalletContext);
   const [reward, setReward] = useState();
   const loading = useToggle();
+  const { createContract: createErc20Contract, approve: erc20Approve } =
+    useERC20({});
 
   const abi = stakeReward.abi;
 
   useEffect(() => {
     if (address && signer) {
-      loading.toggle();
-      const stakeContract = new ethers.Contract(address, abi, signer);
-      setReward(stakeContract);
-      loading.toggle();
+      createContract(address);
     }
   }, [signer, address]);
+  const createContract = (contractAddress) => {
+    const stakeContract = new ethers.Contract(contractAddress, abi, signer);
+    setReward(stakeContract);
+  };
 
   const liquidityAndStake = async ({ tokenB, ethAmount }) => {
     try {
-      const tokenContract = new ethers.Contract(
-        getToken(process.env.REACT_APP_NETWORK_ID, tokenB, "address").address,
-        erc20Abi.abi,
-        signer
-      );
-      let tx = await tokenContract
-        .connect(signer)
-        .approve(reward.address, ethers.utils.parseEther("100"));
-      tx = await reward.addLiquidityEth(tokenB, {
+      console.log("hola");
+      if (!reward) return;
+      console.log("chao");
+      createErc20Contract(tokenB);
+      erc20Approve(reward.address, ethers.utils.parseEther("100"));
+
+      const tx = await reward.addLiquidityEth(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
         gasLimit: 750000,
       });
@@ -52,11 +52,21 @@ export default function useReward({ address }) {
     }
   };
 
-  const grantAllowance = () => {};
-
+  const balanceOf = async () => {
+    try {
+      if (!reward) return;
+      console.log(reward.address);
+      const balance = await reward.balanceOf(currentAccount);
+      return balance.toString();
+    } catch (error) {
+      return 0;
+    }
+  };
   return {
     reward,
     liquidityAndStake,
     loading,
+    balanceOf,
+    createContract,
   };
 }

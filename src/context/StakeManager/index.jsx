@@ -51,11 +51,19 @@ export function StakeManagerProvider({ children }) {
       for (let i = 0; i < poolTokens; i++) {
         const address = await stakingManager.stakingTokens(i);
         const pool = await stakingManager.stakingRewardsTokenInfo(address);
-        allPools.push({
-          address: pool.stakingRewards.toString().toLowerCase(),
-          token: address,
-        });
-        allAvailableTokenPools.push(address);
+        const token = getToken(
+          process.env.REACT_APP_NETWORK_ID,
+          address,
+          "address"
+        );
+        if (token) {
+          allPools.push({
+            address: pool.stakingRewards.toString().toLowerCase(),
+            token: address,
+            symbol: token?.symbol,
+          });
+          allAvailableTokenPools.push(address);
+        }
       }
       setPoolAddress(allPools);
       setAvailablePools(allAvailableTokenPools);
@@ -95,6 +103,15 @@ export function StakeManagerProvider({ children }) {
       });
     }
   };
+  const getPool = async (tokenAddress) => {
+    try {
+      const stake = await stakingManager.stakingRewardsTokenInfo(tokenAddress);
+
+      return { stake };
+    } catch (error) {
+      return { error: error.message };
+    }
+  };
 
   return (
     <StakeManagerContext.Provider
@@ -106,6 +123,7 @@ export function StakeManagerProvider({ children }) {
         stakingManager,
         poolTokens,
         deploy,
+        getPool,
       }}
     >
       {children}

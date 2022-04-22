@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import WalletContext from "../../../../context/Wallet";
-import { Text } from "../../../../GlobalStyles/styles";
+import { Text, Button } from "../../../../GlobalStyles/styles";
 
 const Connected = ({ currentAccount }) => {
   return <Text>{currentAccount.slice(0, 10)}</Text>;
@@ -8,12 +8,9 @@ const Connected = ({ currentAccount }) => {
 
 const Disconnected = ({ connectWalletHandler }) => {
   return (
-    <button
-      onClick={connectWalletHandler}
-      className="cta-button connect-wallet-button"
-    >
+    <Button width="200px" onClick={connectWalletHandler}>
       Connect Wallet
-    </button>
+    </Button>
   );
 };
 

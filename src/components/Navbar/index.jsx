@@ -5,20 +5,25 @@ import { NavItem, NavContainer, Nav } from "./styles";
 import ConnectWallet from "./components/connectWalletDot";
 import WalletContext from "../../context/Wallet";
 
-const navItems = [
-  { pathname: "/", label: "home" },
-  { pathname: "/add-liquidity", label: "Add liquidity" },
-  { pathname: "/stake", label: "Stake" },
-  { pathname: "/balance", label: "Balance" },
-];
+// TODO: transform this multiples array on a unique json object to simplify render
+// NOTE: put this inside the component using callback hook to avoid renders
 
+// items public items
+const navItems = [{ pathname: "/", label: "home" }];
+
+// items available id you are a admin of stake manage
 const managerAdminNavItems = [
   { pathname: "/create-stake-pool", label: "Create stake pool" },
+];
+// items available when connect wallet
+const userItems = [
+  { pathname: "/add-stake", label: "Add stake" },
+  { pathname: "/balance", label: "Balance" },
 ];
 
 export default function NavBar() {
   const { pathname } = useLocation();
-  const { roles } = useContext(WalletContext);
+  const { roles, currentAccount } = useContext(WalletContext);
 
   return (
     <Nav>
@@ -31,6 +36,14 @@ export default function NavBar() {
           );
         })}
 
+        {currentAccount &&
+          userItems.map((item) => {
+            return (
+              <NavItem key={item.pathname} active={item.pathname === pathname}>
+                <Link to={item.pathname}>{item.label}</Link>
+              </NavItem>
+            );
+          })}
         {roles.stakeAdmin &&
           managerAdminNavItems.map((item) => {
             return (

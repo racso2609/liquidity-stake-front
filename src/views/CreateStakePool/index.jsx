@@ -1,8 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { StakeContainer, Container } from "./styles";
 import StakeManagerContext from "../../context/StakeManager";
 import useForm from "../../hooks/useForm";
-import { Select, Input, H1 } from "../../GlobalStyles/styles";
+import { Select, Input, H1, Button } from "../../GlobalStyles/styles";
 import { tokens } from "../../functions/tokens";
 import { notify } from "../../utils/notify";
 
@@ -31,7 +31,7 @@ export default function CreateStackPool() {
       <Container>
         <form onSubmit={handleSubmit}>
           <H1>Create pool</H1>
-          <Select {...selectToken}>
+          <Select margin="20px auto" {...selectToken}>
             <option>Select stake token</option>
             {tokenList.map((token) => (
               <option key={token.address} value={token.address}>
@@ -39,8 +39,8 @@ export default function CreateStackPool() {
               </option>
             ))}
           </Select>
-          <Input {...rewardAmount} />
-          <button>Submit</button>
+          <Input margin="20px auto" {...rewardAmount} />
+          <Button>Submit</Button>
         </form>
       </Container>
     </StakeContainer>
