@@ -15,7 +15,7 @@ export default function AddLiquidity() {
   const { liquidityAndStake } = useReward({
     address: selectedPool.value ? JSON.parse(selectedPool.value).address : "",
     erc20Address: selectedPool.value
-      ? JSON.parse(selectedPool.value).address
+      ? JSON.parse(selectedPool.value).lpToken
       : "",
   });
 
@@ -39,10 +39,10 @@ export default function AddLiquidity() {
           <Select margin="20px auto" {...selectedPool}>
             <option>Select a token from the list</option>
             {poolAddress
-              .filter((pool) => pool.symbol[0] === "U")
+              .filter((pool) => pool.isLp)
               .map((pool) => (
                 <option key={pool.address} value={JSON.stringify(pool)}>
-                  {pool.symbol}
+                  {pool.symbol.substring(1, pool.symbol.length)}
                 </option>
               ))}
           </Select>

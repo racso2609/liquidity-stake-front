@@ -35,7 +35,7 @@ export default function useERC20({ address }) {
     }
   };
   const approve = async ({ to, amount }) => {
-    await contract.connect(signer).approve(to, amount);
+    await contract.connect(signer).approve(to, amount, { gasLimit: 750000 });
   };
 
   return { abi, erc20Contract: contract, balanceOf, approve, createContract };
