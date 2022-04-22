@@ -20,20 +20,19 @@ export default function useReward({ address }) {
       createContract(address);
     }
   }, [signer, address]);
+
   const createContract = (contractAddress) => {
     const stakeContract = new ethers.Contract(contractAddress, abi, signer);
     setReward(stakeContract);
   };
 
-  const liquidityAndStake = async ({ tokenB, ethAmount }) => {
+  const liquidityAndStake = async ({ tokenB, ethAmount, lpToken }) => {
     try {
-      console.log("hola");
       if (!reward) return;
-      console.log("chao");
-      createErc20Contract(tokenB);
+      createErc20Contract(lpToken);
       erc20Approve(reward.address, ethers.utils.parseEther("100"));
 
-      const tx = await reward.addLiquidityEth(tokenB, {
+      const tx = await reward.addLiquidityAndStake(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
         gasLimit: 750000,
       });

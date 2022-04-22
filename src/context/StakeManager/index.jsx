@@ -57,9 +57,14 @@ export function StakeManagerProvider({ children }) {
           "address"
         );
         if (token) {
+          const lpToken = getToken(
+            process.env.REACT_APP_NETWORK_ID,
+            `U${token.symbol}`
+          );
           allPools.push({
             address: pool.stakingRewards.toString().toLowerCase(),
             token: address,
+            lpToken: lpToken?.address,
             symbol: token?.symbol,
           });
           allAvailableTokenPools.push(address);

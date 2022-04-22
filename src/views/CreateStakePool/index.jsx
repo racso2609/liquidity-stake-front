@@ -33,11 +33,13 @@ export default function CreateStackPool() {
           <H1>Create pool</H1>
           <Select margin="20px auto" {...selectToken}>
             <option>Select stake token</option>
-            {tokenList.map((token) => (
-              <option key={token.address} value={token.address}>
-                {token.symbol}
-              </option>
-            ))}
+            {tokenList
+              .filter((token) => token.symbol[0] === "U")
+              .map((token) => (
+                <option key={token.address} value={token.address}>
+                  {token.symbol}
+                </option>
+              ))}
           </Select>
           <Input margin="20px auto" {...rewardAmount} />
           <Button>Submit</Button>

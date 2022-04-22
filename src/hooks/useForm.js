@@ -9,7 +9,6 @@ function useForm({ defaultValue, type, placeholder, max, min }) {
   };
 
   const onChangeText = (e) => {
-    console.log(e.target);
     const valueInput = e.target.value;
     setValue(valueInput);
   };

@@ -1,12 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Text, H1, Container, Select, Button } from "../../GlobalStyles/styles";
-
-import { tokens } from "../../functions/tokens";
 import useERC20 from "../../hooks/useErc20";
 import useForm from "../../hooks/useForm";
 import useReward from "../../hooks/useStakingReward";
 import StakeManagerContext from "../../context/StakeManager";
-import { ethers } from "ethers";
 
 const Balances = () => {
   const selectedPool = useForm({ type: "select" });

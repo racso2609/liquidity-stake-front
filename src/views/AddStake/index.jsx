@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Input, Select, H1, Button } from "../../GlobalStyles/styles";
 import { LiquidityContainer, Container } from "./styles";
-import { tokens } from "../../functions/tokens";
 import useForm from "../../hooks/useForm";
 import StakeManagerContext from "../../context/StakeManager";
 import useReward from "../../hooks/useStakingReward";
@@ -16,14 +15,14 @@ export default function AddLiquidity() {
   const { liquidityAndStake } = useReward({
     address: selectedPool.value ? JSON.parse(selectedPool.value).address : "",
   });
-  console.log(selectedPool.value, poolAddress);
 
   const handleSubmit = async (e) => {
-    if (!selectedPool.value) return;
     e.preventDefault();
+    if (!selectedPool.value) return;
 
     const data = {
       tokenB: JSON.parse(selectedPool.value).token,
+      lpToken: JSON.parse(selectedPool.value).lpToken,
       ethAmount: ethAmount.value,
     };
     await liquidityAndStake(data);
@@ -37,11 +36,13 @@ export default function AddLiquidity() {
           <Input margin="20px auto" {...ethAmount} />
           <Select margin="20px auto" {...selectedPool}>
             <option>Select a token from the list</option>
-            {poolAddress.map((pool) => (
-              <option key={pool.address} value={JSON.stringify(pool)}>
-                {pool.symbol}
-              </option>
-            ))}
+            {poolAddress
+              .filter((pool) => pool.symbol[0] !== "U")
+              .map((pool) => (
+                <option key={pool.address} value={JSON.stringify(pool)}>
+                  {pool.symbol}
+                </option>
+              ))}
           </Select>
           <Button>Stake</Button>
         </form>
