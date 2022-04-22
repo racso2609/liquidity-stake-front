@@ -18,7 +18,6 @@ export function StakeManagerProvider({ children }) {
 
   const address = stakingManagerInfo.address;
   const abi = stakingManagerInfo.abi;
-
   useEffect(() => {
     const stakeContract = new ethers.Contract(address, abi, signer);
     setStakingManager(stakeContract);
@@ -51,15 +50,19 @@ export function StakeManagerProvider({ children }) {
       for (let i = 0; i < poolTokens; i++) {
         const address = await stakingManager.stakingTokens(i);
         const pool = await stakingManager.stakingRewardsTokenInfo(address);
+
         const token = getToken(
           process.env.REACT_APP_NETWORK_ID,
           address,
           "address"
         );
+
         if (token) {
           const lpToken = getToken(
             process.env.REACT_APP_NETWORK_ID,
-            `U${token.symbol}`
+            token.symbol[0] === "U"
+              ? token.symbol.substring(1, token.symbol.lenght)
+              : `U${token.symbol}`
           );
           allPools.push({
             address: pool.stakingRewards.toString().toLowerCase(),
@@ -95,6 +98,7 @@ export function StakeManagerProvider({ children }) {
           weth.address,
           uniswapFactory.address
         );
+      console.log(tx);
       await tx.wait();
       notify({
         type: "success",
