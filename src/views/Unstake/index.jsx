@@ -22,7 +22,7 @@ export default function Unstake() {
 
     const data = {
       lpToken: JSON.parse(selectedPool.value).lpToken,
-      amount: lpAmount,
+      lpAmount: lpAmount.value,
     };
     await unstake(data);
   };
@@ -36,7 +36,7 @@ export default function Unstake() {
           <Select margin="20px auto" {...selectedPool}>
             <option>Select a token from the list</option>
             {poolAddress
-              .filter((pool) => pool.symbol[0] !== "U")
+              .filter((pool) => pool.isLp)
               .map((pool) => (
                 <option key={pool.address} value={JSON.stringify(pool)}>
                   {pool.symbol}

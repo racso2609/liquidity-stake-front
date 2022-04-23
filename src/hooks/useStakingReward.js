@@ -84,7 +84,7 @@ export default function useReward({ address, erc20Address }) {
       if (!reward) return;
       createErc20Contract(lpToken);
 
-      const tx = await reward.claimRewards();
+      const tx = await reward.claimTokens();
       await tx.wait();
       notify({
         type: "success",
