@@ -42,7 +42,6 @@ export default function useReward({ address, erc20Address }) {
 
       const tx = await reward.addLiquidityAndStake(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
-        gasLimit: 12724353,
       });
       await tx.wait();
       notify({
