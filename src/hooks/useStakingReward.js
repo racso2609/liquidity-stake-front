@@ -60,17 +60,17 @@ export default function useReward({ address, erc20Address }) {
   };
 
   const unstake = async ({ lpToken, lpAmount }) => {
-    try{
-      if(!reward) return;
+    try {
+      if (!reward) return;
       createErc20Contract(lpToken);
-      
+
       const tx = await reward.unstake(lpAmount);
       await tx.wait();
       notify({
         type: "success",
         message: "Unstake complete ",
       });
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       notify({
         type: "error",
@@ -81,8 +81,8 @@ export default function useReward({ address, erc20Address }) {
   };
 
   const claimRewards = async ({ lpToken }) => {
-    try{
-      if(!reward) return;
+    try {
+      if (!reward) return;
       createErc20Contract(lpToken);
 
       const tx = await reward.claimRewards();
@@ -91,7 +91,7 @@ export default function useReward({ address, erc20Address }) {
         type: "success",
         message: "Claim Rewards complete",
       });
-    }catch(error) {
+    } catch (error) {
       console.log(error);
       notify({
         type: "error",

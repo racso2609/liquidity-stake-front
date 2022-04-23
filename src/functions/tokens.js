@@ -69,6 +69,23 @@ const tokens = {
       address: "0x01BE23585060835E02B77ef475b0Cc51aA1e0709",
     },
   ],
+  [3]: [
+    {
+      decimals: 18,
+      symbol: "DAI",
+      address: "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
+    },
+    {
+      decimals: 18,
+      symbol: "UDAI",
+      address: "0x1c5DEe94a34D795f9EEeF830B68B80e44868d316",
+    },
+    {
+      decimals: 18,
+      symbol: "WETH",
+      address: "0x0a180A76e4466bF68A7F86fB029BEd3cCcFaAac5",
+    },
+  ],
 };
 
 const getToken = (networkId, symbol, attribute = "symbol") => {
