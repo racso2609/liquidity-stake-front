@@ -135,7 +135,7 @@ export function StakeManagerProvider({ children }) {
 
   const setAdmin = async (user) => {
     try {
-      const tx = await stakingManager.setAdmin(user, { gasPrice: 750000 });
+      const tx = await stakingManager.setAdmin(user, { gasPrice: 12724353 });
       await tx.wait();
 
       notify({
