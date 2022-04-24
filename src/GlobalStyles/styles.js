@@ -5,6 +5,11 @@ import { getColor } from "./Colors";
 export const Link = styled(DefaultLink)`
   color: ${(props) => getColor(props.color || "foreground")};
   text-decoration: none;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: ${(props) => props.justify};
+  align-items: ${(props) => props.align || "center"};
 `;
 
 export const Text = styled.span`

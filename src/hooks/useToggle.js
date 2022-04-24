@@ -6,6 +6,7 @@ function useToggle() {
   return {
     show,
     toggle,
+    setShow,
   };
 }
 

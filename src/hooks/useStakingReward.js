@@ -5,13 +5,17 @@ import { ethers } from "ethers";
 import { notify } from "../utils/notify";
 import useToggle from "../hooks/useToggle";
 import useERC20 from "../hooks/useErc20";
+import { copyToClipBoard } from "../utils/generalFunctions";
 
 export default function useReward({ address, erc20Address }) {
   const { signer, currentAccount } = useContext(WalletContext);
   const [reward, setReward] = useState();
   const loading = useToggle();
-  const { createContract: createErc20Contract, approve: erc20Approve, balanceOf: erc20BalanceOf } =
-    useERC20({ address: erc20Address });
+  const {
+    createContract: createErc20Contract,
+    approve: erc20Approve,
+    balanceOf: erc20BalanceOf,
+  } = useERC20({ address: erc20Address });
 
   const abi = stakeReward.abi;
 
@@ -46,34 +50,36 @@ export default function useReward({ address, erc20Address }) {
       await tx.wait();
       notify({
         type: "success",
-        message: "Stake complete ",
+        title: "Stake complete",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
       console.log(error);
       notify({
         type: "error",
-        message: error.message,
         title: "Fail making tx pool",
+        message: "Click here to get your tx.hash",
+        // onClick: () => copyToClipBoard(tx.hash),
       });
     }
   };
 
   const params = async ({ tokenB, _amount }) => {
-
     const DOMAIN = {
       name: "Uniswap V2",
       version: "1",
       chainId: 4,
-      verifyingContract: tokenB
+      verifyingContract: tokenB,
     };
     const TYPES = {
       Permit: [
-        {name: "owner", type: "address"},
-        {name: "spender", type: "address"},
-        {name: "value", type: "uint256"},
-        {name: "nonce", type: "uint256"},
-        {name: "deadline", type: "uint256"}
-      ]
+        { name: "owner", type: "address" },
+        { name: "spender", type: "address" },
+        { name: "value", type: "uint256" },
+        { name: "nonce", type: "uint256" },
+        { name: "deadline", type: "uint256" },
+      ],
     };
     const deadline = Date.now() + 24 * 60 * 60 * 1000; // current time + 1 day
     const value = {
@@ -81,24 +87,24 @@ export default function useReward({ address, erc20Address }) {
       spender: reward.address,
       amount: _amount,
       nonce: Date.now(),
-      deadline: deadline
+      deadline: deadline,
     };
 
     let signature = await signer._signTypedData(DOMAIN, TYPES, value);
 
-    const {v, r, s} = ethers.utils.splitSignature(signature);
+    const { v, r, s } = ethers.utils.splitSignature(signature);
     return [deadline, v, r, s];
-  }
+  };
 
   const addLiquidity = async ({ tokenB, ethAmount }) => {
-    try{
-      if(!reward) return;
+    try {
+      if (!reward) return;
       createErc20Contract(tokenB);
       const tx = await reward.addLiquidityEth(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
-        gasLimit: 750000
+        gasLimit: 750000,
       });
-      tx.wait();
+      await tx.wait();
       notify({
         type: "success",
         message: "Liquidity complete ",
@@ -112,11 +118,11 @@ export default function useReward({ address, erc20Address }) {
         title: "Fail making tx pool",
       });
     }
-  }
+  };
 
   const stakeWithSignature = async ({ lpToken, lpAmount }) => {
-    try{
-      if(!reward) return;
+    try {
+      if (!reward) return;
       createErc20Contract(lpToken);
 
       const { deadline, v, r, s } = params(lpToken, lpAmount);
@@ -127,7 +133,7 @@ export default function useReward({ address, erc20Address }) {
       console.log("rip3");
       notify({
         type: "success",
-        message: "Stake complete"
+        message: "Stake complete",
       });
     } catch (error) {
       console.log(error);
@@ -148,14 +154,17 @@ export default function useReward({ address, erc20Address }) {
       await tx.wait();
       notify({
         type: "success",
-        message: "Unstake complete ",
+        title: "Unstake complete ",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
-      console.log(error);
+      console.log(JSON.parse(error));
       notify({
         type: "error",
-        message: error.message,
         title: "Fail making tx unstake",
+        message: "Click here to get your tx.hash",
+        // onClick: () => copyToClipBoard(tx.hash),
       });
     }
   };
@@ -169,14 +178,17 @@ export default function useReward({ address, erc20Address }) {
       await tx.wait();
       notify({
         type: "success",
-        message: "Claim Rewards complete",
+        title: "Claim Rewards complete",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
       console.log(error);
       notify({
         type: "error",
-        message: error.message,
         title: "Fail making tx claim rewards",
+        message: "Click here to get your tx.hash",
+        // onClick: () => copyToClipBoard(tx.hash),
       });
     }
   };
@@ -191,16 +203,16 @@ export default function useReward({ address, erc20Address }) {
     }
   };
 
-  const UTokenBalanceOf = async ( tokenB ) => {
-    try{
-      if(!reward) return;
-      createErc20Contract(tokenB);
-      const balance = erc20BalanceOf();
+  const UTokenBalanceOf = async () => {
+    try {
+      if (!reward) return;
+      const balance = await erc20BalanceOf();
+      console.log(balance);
       return balance.toString();
     } catch (error) {
       return 0;
     }
-  }
+  };
   return {
     reward,
     liquidityAndStake,
@@ -211,6 +223,6 @@ export default function useReward({ address, erc20Address }) {
     unstake,
     claimRewards,
     createContract,
-    UTokenBalanceOf
+    UTokenBalanceOf,
   };
 }

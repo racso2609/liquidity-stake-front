@@ -1,9 +1,24 @@
 import React, { useContext } from "react";
 import WalletContext from "../../../../context/Wallet";
-import { Text, Button } from "../../../../GlobalStyles/styles";
+import { Button, Container } from "../../../../GlobalStyles/styles";
+import Identicon from "react-identicons";
+import styled from "styled-components";
+
+const ContainerImage = styled(Container)`
+  width: auto;
+  height: auto;
+  > * {
+    width: ${(props) => props.width} !important;
+    height: ${(props) => props.height} !important;
+  }
+`;
 
 const Connected = ({ currentAccount }) => {
-  return <Text>{currentAccount.slice(0, 10)}</Text>;
+  return (
+    <ContainerImage width="30px" height="30px" align="center" justify="center">
+      <Identicon string={currentAccount} />
+    </ContainerImage>
+  );
 };
 
 const Disconnected = ({ connectWalletHandler }) => {
