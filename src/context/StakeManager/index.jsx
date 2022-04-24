@@ -109,16 +109,15 @@ export function StakeManagerProvider({ children }) {
         onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
-      console.log(JSON.parse(error), error.data, error.response);
+      console.table(error, error.data, error.response);
       notify({
         type: "error",
         title: "Fail creating pool",
-        message: "Click here to get your tx.hash",
-        // onClick: () => copyToClipBoard(tx.hash),
+        message: `Click here to get your tx.hash ${error.transactionHash}`,
+        onClick: () => copyToClipBoard(error.transactionHash),
       });
     }
   };
-
 
   const notifyRewardAmount = async ({ stakeToken }) => {
     try {
@@ -137,7 +136,7 @@ export function StakeManagerProvider({ children }) {
         type: "error",
         title: "Fail tx notifyRewardAmount",
         message: "Click here to get you tx.hash",
-        // onClick: () => copyToClipBoard(tx.hash),
+        onClick: () => copyToClipBoard(error.transactionHash),
       });
     }
   };
@@ -158,7 +157,7 @@ export function StakeManagerProvider({ children }) {
         type: "error",
         title: "Fail adding admin",
         message: "Click here to get your tx.hash",
-        // onClick: () => copyToClipBoard(tx.hash),
+        onClick: () => copyToClipBoard(error.transactionHash),
       });
     }
   };

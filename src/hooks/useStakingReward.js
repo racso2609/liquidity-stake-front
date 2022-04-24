@@ -60,7 +60,7 @@ export default function useReward({ address, erc20Address }) {
         type: "error",
         title: "Fail making tx pool",
         message: "Click here to get your tx.hash",
-        // onClick: () => copyToClipBoard(tx.hash),
+        onClick: () => copyToClipBoard(error.transactionHash),
       });
     }
   };
@@ -107,15 +107,17 @@ export default function useReward({ address, erc20Address }) {
       await tx.wait();
       notify({
         type: "success",
-        message: "Liquidity complete ",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
       console.log("err");
       console.log(error);
       notify({
         type: "error",
-        message: error.message,
         title: "Fail making tx pool",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(error.transactionHash),
       });
     }
   };
@@ -133,14 +135,16 @@ export default function useReward({ address, erc20Address }) {
       console.log("rip3");
       notify({
         type: "success",
-        message: "Stake complete",
+        title: "Stake complete",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
-      console.log(error);
       notify({
         type: "error",
-        message: error.message,
+        message: "Click here to get your tx.hash",
         title: "Fail making tx stake",
+        onClick: () => copyToClipBoard(error.transactionHash),
       });
     }
   };
@@ -164,7 +168,7 @@ export default function useReward({ address, erc20Address }) {
         type: "error",
         title: "Fail making tx unstake",
         message: "Click here to get your tx.hash",
-        // onClick: () => copyToClipBoard(tx.hash),
+        onClick: () => copyToClipBoard(error.transactionHash),
       });
     }
   };
@@ -188,7 +192,7 @@ export default function useReward({ address, erc20Address }) {
         type: "error",
         title: "Fail making tx claim rewards",
         message: "Click here to get your tx.hash",
-        // onClick: () => copyToClipBoard(tx.hash),
+        onClick: () => copyToClipBoard(error.transactionHash),
       });
     }
   };
