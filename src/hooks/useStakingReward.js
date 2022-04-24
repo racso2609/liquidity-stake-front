@@ -69,7 +69,7 @@ export default function useReward({ address, erc20Address }) {
     const DOMAIN = {
       name: "Uniswap V2",
       version: "1",
-      chainId: 4,
+      chainId: 3,
       verifyingContract: tokenB,
     };
     const TYPES = {
@@ -83,16 +83,18 @@ export default function useReward({ address, erc20Address }) {
     };
     const deadline = Date.now() + 24 * 60 * 60 * 1000; // current time + 1 day
     const value = {
-      owner: signer.address,
+      owner: currentAccount,
       spender: reward.address,
-      amount: _amount,
+      value: _amount,
       nonce: Date.now(),
       deadline: deadline,
     };
 
     let signature = await signer._signTypedData(DOMAIN, TYPES, value);
+    console.log("sig: " + signature);
 
     const { v, r, s } = ethers.utils.splitSignature(signature);
+    console.log(deadline);
     return [deadline, v, r, s];
   };
 
@@ -110,7 +112,6 @@ export default function useReward({ address, erc20Address }) {
         message: "Liquidity complete ",
       });
     } catch (error) {
-      console.log("err");
       console.log(error);
       notify({
         type: "error",
@@ -124,13 +125,17 @@ export default function useReward({ address, erc20Address }) {
     try {
       if (!reward) return;
       createErc20Contract(lpToken);
-
-      const { deadline, v, r, s } = params(lpToken, lpAmount);
-      console.log("rip");
-      const tx = await reward.stakeWithPermit(lpAmount, deadline, v, r, s);
-      console.log("rip2");
+      const data = {
+        tokenB: lpToken,
+        _amount: lpAmount,
+      }
+      const [ deadline, v, r, s ] = await params(data);
+      console.log(deadline, v, r, s);
+      const tx = await reward.stakeWithPermit(lpAmount, deadline, v, r, s, {
+        gasLimit: 7500000
+      });
       await tx.wait();
-      console.log("rip3");
+      console.log("success");
       notify({
         type: "success",
         message: "Stake complete",
