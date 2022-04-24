@@ -7,14 +7,3 @@ export const ClaimContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-export const Container = styled.div`
-  background-color: ${(props) => getColor(props.background || "card")};
-  form {
-    width: 500px;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-`;

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { Select, H1, Button } from "../../GlobalStyles/styles";
-import { ClaimContainer, Container } from "./styles";
+import { Select, H1, Button, FormContainer } from "../../GlobalStyles/styles";
+import { ClaimContainer } from "./styles";
 import useForm from "../../hooks/useForm";
 import StakeManagerContext from "../../context/StakeManager";
 import useReward from "../../hooks/useStakingReward";
@@ -24,7 +24,7 @@ export default function ClaimRewards() {
 
   return (
     <ClaimContainer>
-      <Container>
+      <FormContainer>
         <form onSubmit={handleSubmit}>
           <H1 style={{ textAlign: "center" }}>Claim Rewards</H1>
           <Select margin="20px auto" {...selectedPool}>
@@ -39,7 +39,7 @@ export default function ClaimRewards() {
           </Select>
           <Button>Claim Rewards</Button>
         </form>
-      </Container>
+      </FormContainer>
     </ClaimContainer>
   );
 }

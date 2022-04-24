@@ -1,6 +1,12 @@
 import React, { useContext } from "react";
-import { Input, Select, H1, Button } from "../../GlobalStyles/styles";
-import { UnstakeContainer, Container } from "./styles";
+import {
+  Input,
+  Select,
+  H1,
+  Button,
+  FormContainer,
+} from "../../GlobalStyles/styles";
+import { UnstakeContainer } from "./styles";
 import useForm from "../../hooks/useForm";
 import StakeManagerContext from "../../context/StakeManager";
 import useReward from "../../hooks/useStakingReward";
@@ -29,7 +35,7 @@ export default function Unstake() {
 
   return (
     <UnstakeContainer>
-      <Container>
+      <FormContainer>
         <form onSubmit={handleSubmit}>
           <H1 style={{ textAlign: "center" }}>Unstake</H1>
           <Input margin="20px auto" {...lpAmount} />
@@ -45,7 +51,7 @@ export default function Unstake() {
           </Select>
           <Button>Unstake</Button>
         </form>
-      </Container>
+      </FormContainer>
     </UnstakeContainer>
   );
 }

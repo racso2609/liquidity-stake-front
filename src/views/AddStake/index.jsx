@@ -1,6 +1,12 @@
 import React, { useContext } from "react";
-import { Input, Select, H1, Button } from "../../GlobalStyles/styles";
-import { LiquidityContainer, Container } from "./styles";
+import {
+  Input,
+  Select,
+  H1,
+  Button,
+  FormContainer,
+} from "../../GlobalStyles/styles";
+import { LiquidityContainer } from "./styles";
 import useForm from "../../hooks/useForm";
 import StakeManagerContext from "../../context/StakeManager";
 import useReward from "../../hooks/useStakingReward";
@@ -32,7 +38,7 @@ export default function AddLiquidity() {
 
   return (
     <LiquidityContainer>
-      <Container>
+      <FormContainer>
         <form onSubmit={handleSubmit}>
           <H1 style={{ textAlign: "center" }}>Add liquidity - ETH / TOKEN</H1>
           <Input margin="20px auto" {...ethAmount} />
@@ -48,7 +54,7 @@ export default function AddLiquidity() {
           </Select>
           <Button>Stake</Button>
         </form>
-      </Container>
+      </FormContainer>
     </LiquidityContainer>
   );
 }

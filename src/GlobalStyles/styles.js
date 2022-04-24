@@ -2,6 +2,24 @@ import styled from "styled-components";
 import { Link as DefaultLink } from "react-router-dom";
 import { getColor } from "./Colors";
 
+export const FormContainer = styled.div`
+  background-color: ${(props) => getColor(props.background || "card")};
+  form {
+    margin: 2rem 0;
+    width: 500px;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 800px) {
+    form {
+      width: 80vw;
+    }
+  }
+`;
+
 export const Link = styled(DefaultLink)`
   color: ${(props) => getColor(props.color || "foreground")};
   text-decoration: none;
@@ -28,11 +46,10 @@ export const Input = styled.input`
   background-color: ${(props) => getColor(props.background || "card")};
   border-radius: 10px;
   border: 1px solid white;
+  width: 90%;
   display: block;
-  max-width: 90%;
   padding: 10px;
   margin: ${(props) => props.margin};
-  width: 100%;
   color: ${(props) => getColor(props.color || "foreground")};
 `;
 
@@ -43,10 +60,9 @@ export const Select = styled.select`
   border-radius: 10px;
   border: 1px solid white;
   display: block;
+  width: 90%;
   padding: 10px;
   margin: ${(props) => props.margin};
-  width: 100%;
-  max-width: 90%;
 `;
 
 export const Container = styled.div`

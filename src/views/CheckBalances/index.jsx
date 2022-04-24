@@ -29,13 +29,13 @@ const Balances = () => {
   }, [selectedPool.value, balanceOf, balanceOfStake]);
 
   return (
-    <div>
+    <Container with="80vw" margin="0 auto" padding="0 20px">
       <Container align="center">
         <H1>Check your balance on our available coins pools</H1>
         <Text>Balance token: {balance}</Text>
         <Text>Balance Stake: {balanceStake}</Text>
       </Container>
-      <Container maxWidth="500px" margin="5rem auto">
+      <Container margin="5rem 0" align="center">
         <Select {...selectedPool}>
           <option value="">Select a coin</option>
           {poolAddress?.map((pool) => (
@@ -45,7 +45,7 @@ const Balances = () => {
           ))}
         </Select>
       </Container>
-    </div>
+    </Container>
   );
 };
 

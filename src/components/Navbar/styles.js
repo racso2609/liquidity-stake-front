@@ -29,7 +29,7 @@ export const NavContainer = styled.div`
 
 export const Nav = styled.div`
   display: grid;
-  grid-template-columns: 0.6fr 1fr;
+  grid-template-columns: 0.2fr 1fr;
   background-color: ${getColor("card")};
   padding: 0 20px;
 
@@ -82,10 +82,12 @@ export const NavItemPopContainer = styled(NavItem)`
       right: ${(props) => (props.subMenu ? "100%" : "50%")};
       width: 200px;
     }
-    & > .pop-over:hover {
-      .pop-over {
-        display: ${(props) => (props.showChildren ? "block" : "none")};
-      }
+  }
+  @media (max-width: 600px) {
+    & > .pop-over {
+      top: ${(props) => (props.subMenu ? "100%" : "100%")};
+      right: ${(props) => (props.subMenu ? "0" : "50%")};
+      width: 200px;
     }
   }
 `;

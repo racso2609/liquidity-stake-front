@@ -103,7 +103,7 @@ export default function NavBar() {
         )}
       </NavContainer>
       <div className="responsive-container">
-        <NavItem onClick={toggleResponsive} hideColor>
+        <NavItem onClick={toggleResponsive} hideColor padding="10px 0">
           <Hamburg />
         </NavItem>
         <NavItemPopContainer

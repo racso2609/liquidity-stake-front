@@ -1,7 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { Input, Select, H1, Button, Text } from "../../GlobalStyles/styles";
-import { StakeContainer, Container } from "./styles";
+import {
+  Input,
+  Select,
+  H1,
+  Button,
+  Text,
+  FormContainer,
+} from "../../GlobalStyles/styles";
+import { StakeContainer } from "./styles";
 import useForm from "../../hooks/useForm";
 import StakeManagerContext from "../../context/StakeManager";
 import useReward from "../../hooks/useStakingReward";
@@ -30,7 +37,7 @@ const AddLiquidity = () => {
   };
 
   return (
-    <Container>
+    <FormContainer>
       <form onSubmit={handleSubmit}>
         <H1 style={{ textAlign: "center" }}>Add liquidity</H1>
         <Input margin="20px auto" {...stakeAmount} />
@@ -46,7 +53,7 @@ const AddLiquidity = () => {
         </Select>
         <Button>Stake</Button>
       </form>
-    </Container>
+    </FormContainer>
   );
 };
 
@@ -97,7 +104,7 @@ export default function StakeSignature() {
     <StakeContainer justify="space-around" direction="row">
       <AddLiquidity />
 
-      <Container>
+      <FormContainer>
         <form onSubmit={handleSubmit}>
           <H1 style={{ textAlign: "center" }}>Stake with Signature</H1>
           <Text>lp balance: {uTokenBalanceOf}</Text>
@@ -114,7 +121,7 @@ export default function StakeSignature() {
           </Select>
           <Button>Stake</Button>
         </form>
-      </Container>
+      </FormContainer>
     </StakeContainer>
   );
 }

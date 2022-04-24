@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
-import { NotifyContainer, Container } from "./styles";
+import { NotifyContainer } from "./styles";
 import StakeManagerContext from "../../context/StakeManager";
 import useForm from "../../hooks/useForm";
-import { Select, H1, Button } from "../../GlobalStyles/styles";
-import { tokens } from "../../functions/tokens";
+import { Select, H1, Button, FormContainer } from "../../GlobalStyles/styles";
 import { notify } from "../../utils/notify";
 
 export default function CreateStackPool() {
@@ -23,7 +22,7 @@ export default function CreateStackPool() {
 
   return (
     <NotifyContainer>
-      <Container>
+      <FormContainer>
         <form onSubmit={handleSubmit}>
           <H1>Notify Reward Amount</H1>
           <Select margin="20px auto" {...selectToken}>
@@ -38,7 +37,7 @@ export default function CreateStackPool() {
           </Select>
           <Button>Notify</Button>
         </form>
-      </Container>
+      </FormContainer>
     </NotifyContainer>
   );
 }
