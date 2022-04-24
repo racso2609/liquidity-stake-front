@@ -97,7 +97,8 @@ export function StakeManagerProvider({ children }) {
           rewardDuration,
           uniswap.address,
           weth.address,
-          uniswapFactory.address
+          uniswapFactory.address,
+          { gasLimit: 750000 }
         );
       console.log(tx);
       await tx.wait();
