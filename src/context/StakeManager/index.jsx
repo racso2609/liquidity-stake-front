@@ -114,6 +114,7 @@ export function StakeManagerProvider({ children }) {
     }
   };
 
+
   const notifyRewardAmount = async ({ stakeToken }) => {
     try {
       const tx = await stakingManager

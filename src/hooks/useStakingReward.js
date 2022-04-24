@@ -10,7 +10,7 @@ export default function useReward({ address, erc20Address }) {
   const { signer, currentAccount } = useContext(WalletContext);
   const [reward, setReward] = useState();
   const loading = useToggle();
-  const { createContract: createErc20Contract, approve: erc20Approve } =
+  const { createContract: createErc20Contract, approve: erc20Approve, balanceOf: erc20BalanceOf } =
     useERC20({ address: erc20Address });
 
   const abi = stakeReward.abi;
@@ -54,6 +54,87 @@ export default function useReward({ address, erc20Address }) {
         type: "error",
         message: error.message,
         title: "Fail making tx pool",
+      });
+    }
+  };
+
+  const params = async ({ tokenB, _amount }) => {
+
+    const DOMAIN = {
+      name: "Uniswap V2",
+      version: "1",
+      chainId: 4,
+      verifyingContract: tokenB
+    };
+    const TYPES = {
+      Permit: [
+        {name: "owner", type: "address"},
+        {name: "spender", type: "address"},
+        {name: "value", type: "uint256"},
+        {name: "nonce", type: "uint256"},
+        {name: "deadline", type: "uint256"}
+      ]
+    };
+    const deadline = Date.now() + 24 * 60 * 60 * 1000; // current time + 1 day
+    const value = {
+      owner: signer.address,
+      spender: reward.address,
+      amount: _amount,
+      nonce: Date.now(),
+      deadline: deadline
+    };
+
+    let signature = await signer._signTypedData(DOMAIN, TYPES, value);
+
+    const {v, r, s} = ethers.utils.splitSignature(signature);
+    return [deadline, v, r, s];
+  }
+
+  const addLiquidity = async ({ tokenB, ethAmount }) => {
+    try{
+      if(!reward) return;
+      createErc20Contract(tokenB);
+      const tx = await reward.addLiquidityEth(tokenB, {
+        value: ethers.utils.parseEther(ethAmount),
+        gasLimit: 750000
+      });
+      tx.wait();
+      notify({
+        type: "success",
+        message: "Liquidity complete ",
+      });
+    } catch (error) {
+      console.log("err");
+      console.log(error);
+      notify({
+        type: "error",
+        message: error.message,
+        title: "Fail making tx pool",
+      });
+    }
+  }
+
+  const stakeWithSignature = async ({ lpToken, lpAmount }) => {
+    try{
+      if(!reward) return;
+      createErc20Contract(lpToken);
+
+      const { deadline, v, r, s } = params(lpToken, lpAmount);
+      console.log("rip");
+      const tx = await reward.stakeWithPermit(lpAmount, deadline, v, r, s);
+      console.log("rip2");
+      await tx.wait();
+      console.log("rip3");
+      notify({
+        type: "success",
+        message: "Stake complete"
+      });
+    } catch (error) {
+      console.log(error);
+      notify({
+        type: "error",
+        message: error.message,
+        title: "Fail making tx stake",
       });
     }
   };
@@ -109,13 +190,27 @@ export default function useReward({ address, erc20Address }) {
       return 0;
     }
   };
+
+  const UTokenBalanceOf = async ( tokenB ) => {
+    try{
+      if(!reward) return;
+      createErc20Contract(tokenB);
+      const balance = erc20BalanceOf();
+      return balance.toString();
+    } catch (error) {
+      return 0;
+    }
+  }
   return {
     reward,
     liquidityAndStake,
     loading,
     balanceOf,
+    stakeWithSignature,
+    addLiquidity,
     unstake,
     claimRewards,
     createContract,
+    UTokenBalanceOf
   };
 }

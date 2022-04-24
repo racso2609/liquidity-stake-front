@@ -23,6 +23,7 @@ const userItems = [
   { pathname: "/unstake", label: "Unstake" },
   { pathname: "/claim-rewards", label: "Claim Rewards" },
   { pathname: "/notify", label: "Notify" },
+  { pathname: "/stake-with-signature", label: "Stake With Signature" }
 ];
 
 export default function NavBar() {

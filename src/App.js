@@ -8,6 +8,7 @@ import Balance from "./views/CheckBalances";
 import Unstake from "./views/Unstake";
 import ClaimRewards from "./views/ClaimRewards";
 import Notify from "./views/Notify";
+import StakeWithSignature from "./views/StakeWithSignature";
 import AddAdmin from "./views/AddAdmin";
 import "./App.css";
 import WalletContext from "./context/Wallet";
@@ -22,6 +23,7 @@ function App() {
         {currentAccount && (
           <>
             <Route element={<AddStake />} path="/add-stake" />
+            <Route element={<StakeWithSignature />} path="/stake-with-signature" />
             <Route element={<Unstake />} path="/unstake" />
             <Route element={<ClaimRewards />} path="/claim-rewards" />
             <Route element={<Balance />} path="/balance" />
