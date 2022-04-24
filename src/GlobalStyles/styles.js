@@ -5,6 +5,8 @@ import { getColor } from "./Colors";
 export const Link = styled(DefaultLink)`
   color: ${(props) => getColor(props.color || "foreground")};
   text-decoration: none;
+  width: 100%;
+  height: 100%;
 `;
 
 export const Text = styled.span`
