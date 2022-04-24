@@ -5,6 +5,7 @@ import WalletContext from "../Wallet";
 import { notify } from "../../utils/notify";
 import { getToken } from "../../functions/tokens";
 import { getContract } from "../../functions/contracts";
+import { copyToClipBoard } from "../../utils/generalFunctions";
 
 const StakeManagerContext = createContext();
 
@@ -100,17 +101,20 @@ export function StakeManagerProvider({ children }) {
           uniswapFactory.address,
           { gasLimit: 750000 }
         );
-      console.log(tx);
       await tx.wait();
       notify({
         type: "success",
-        message: "Pool created",
+        title: "Pool created",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
+      console.log(JSON.parse(error), error.data, error.response);
       notify({
         type: "error",
-        message: error.message,
         title: "Fail creating pool",
+        message: "Click here to get your tx.hash",
+        // onClick: () => copyToClipBoard(tx.hash),
       });
     }
   };
@@ -123,13 +127,16 @@ export function StakeManagerProvider({ children }) {
       await tx.wait();
       notify({
         type: "success",
-        message: "notifyRewardAmount successful",
+        title: "notifyRewardAmount successful",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
       notify({
         type: "error",
-        message: error.message,
         title: "Fail tx notifyRewardAmount",
+        message: "Click here to get you tx.hash",
+        // onClick: () => copyToClipBoard(tx.hash),
       });
     }
   };
@@ -141,13 +148,16 @@ export function StakeManagerProvider({ children }) {
 
       notify({
         type: "success",
-        message: "Adding admin",
+        title: "Adding admin",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
       notify({
         type: "error",
-        message: error.message,
         title: "Fail adding admin",
+        message: "Click here to get your tx.hash",
+        // onClick: () => copyToClipBoard(tx.hash),
       });
     }
   };

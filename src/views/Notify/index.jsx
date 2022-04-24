@@ -8,7 +8,7 @@ import { notify } from "../../utils/notify";
 
 export default function CreateStackPool() {
   const { notifyRewardAmount } = useContext(StakeManagerContext);
-  const tokenList = tokens[process.env.REACT_APP_NETWORK_ID];
+  const { poolAddress } = useContext(StakeManagerContext);
   const selectToken = useForm({ type: "select" });
 
   const handleSubmit = async (e) => {
@@ -28,11 +28,11 @@ export default function CreateStackPool() {
           <H1>Notify Reward Amount</H1>
           <Select margin="20px auto" {...selectToken}>
             <option>Select stake token</option>
-            {tokenList
-              .filter((token) => token.symbol[0] === "U")
-              .map((token) => (
-                <option key={token.address} value={token.address}>
-                  {token.symbol}
+            {poolAddress
+              .filter((pool) => pool.isLp)
+              .map((pool) => (
+                <option key={pool.address} value={pool.address}>
+                  {pool.symbol}
                 </option>
               ))}
           </Select>

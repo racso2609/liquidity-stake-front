@@ -85,6 +85,11 @@ const tokens = {
       symbol: "WETH",
       address: "0x0a180A76e4466bF68A7F86fB029BEd3cCcFaAac5",
     },
+    {
+      decimals: 18,
+      symbol: "LINK",
+      address: "0x20fE562d797A42Dcb3399062AE9546cd06f63280",
+    },
   ],
 };
 

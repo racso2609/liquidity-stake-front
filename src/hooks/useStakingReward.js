@@ -5,13 +5,16 @@ import { ethers } from "ethers";
 import { notify } from "../utils/notify";
 import useToggle from "../hooks/useToggle";
 import useERC20 from "../hooks/useErc20";
+import { copyToClipBoard } from "../utils/generalFunctions";
 
 export default function useReward({ address, erc20Address }) {
   const { signer, currentAccount } = useContext(WalletContext);
   const [reward, setReward] = useState();
   const loading = useToggle();
-  const { createContract: createErc20Contract, approve: erc20Approve } =
-    useERC20({ address: erc20Address });
+  const {
+    createContract: createErc20Contract,
+    approve: erc20Approve,
+  } = useERC20({ address: erc20Address });
 
   const abi = stakeReward.abi;
 
@@ -46,14 +49,17 @@ export default function useReward({ address, erc20Address }) {
       await tx.wait();
       notify({
         type: "success",
-        message: "Stake complete ",
+        title: "Stake complete",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
       console.log(error);
       notify({
         type: "error",
-        message: error.message,
         title: "Fail making tx pool",
+        message: "Click here to get your tx.hash",
+        // onClick: () => copyToClipBoard(tx.hash),
       });
     }
   };
@@ -67,14 +73,17 @@ export default function useReward({ address, erc20Address }) {
       await tx.wait();
       notify({
         type: "success",
-        message: "Unstake complete ",
+        title: "Unstake complete ",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
-      console.log(error);
+      console.log(JSON.parse(error));
       notify({
         type: "error",
-        message: error.message,
         title: "Fail making tx unstake",
+        message: "Click here to get your tx.hash",
+        // onClick: () => copyToClipBoard(tx.hash),
       });
     }
   };
@@ -84,18 +93,21 @@ export default function useReward({ address, erc20Address }) {
       if (!reward) return;
       createErc20Contract(lpToken);
 
-      const tx = await reward.claimRewards();
+      const tx = await reward.claimTokens();
       await tx.wait();
       notify({
         type: "success",
-        message: "Claim Rewards complete",
+        title: "Claim Rewards complete",
+        message: "Click here to get your tx.hash",
+        onClick: () => copyToClipBoard(tx.hash),
       });
     } catch (error) {
       console.log(error);
       notify({
         type: "error",
-        message: error.message,
         title: "Fail making tx claim rewards",
+        message: "Click here to get your tx.hash",
+        // onClick: () => copyToClipBoard(tx.hash),
       });
     }
   };
