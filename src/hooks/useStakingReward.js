@@ -70,7 +70,8 @@ export default function useReward({ address, erc20Address }) {
       if (!reward) return;
       const tx = await reward.connect(signer).addLiquidityEth(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
-        gasLimit: 750000,
+        // NOTE: if i add gasLimit let me do tx but fail reason: "transaction fail", if i remove it it say impossible calculate gas
+        // gasLimit: 750000,
       });
       await tx.wait();
       notify({
