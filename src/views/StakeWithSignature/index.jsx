@@ -27,13 +27,13 @@ const AddLiquidity = () => {
       ? JSON.parse(selectedToken.value).address
       : "",
   });
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const liquidityData = {
       tokenB: JSON.parse(selectedToken.value).address,
       ethAmount: stakeAmount.value,
     };
-    addLiquidity(liquidityData);
+    await addLiquidity(liquidityData);
   };
 
   return (

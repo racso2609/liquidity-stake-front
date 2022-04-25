@@ -46,7 +46,6 @@ export default function useReward({ address, erc20Address }) {
 
       const tx = await reward.addLiquidityAndStake(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
-        gasLimit: ethers.utils.parseEther("0.0001"),
       });
       await tx.wait();
       notify({
@@ -66,41 +65,10 @@ export default function useReward({ address, erc20Address }) {
     }
   };
 
-  const params = async ({ tokenB, _amount }) => {
-    const DOMAIN = {
-      name: "Uniswap V2",
-      version: "1",
-      chainId: 4,
-      verifyingContract: tokenB,
-    };
-    const TYPES = {
-      Permit: [
-        { name: "owner", type: "address" },
-        { name: "spender", type: "address" },
-        { name: "value", type: "uint256" },
-        { name: "nonce", type: "uint256" },
-        { name: "deadline", type: "uint256" },
-      ],
-    };
-    const deadline = Date.now() + 24 * 60 * 60 * 1000; // current time + 1 day
-    const value = {
-      owner: signer.address,
-      spender: reward.address,
-      amount: _amount,
-      nonce: Date.now(),
-      deadline: deadline,
-    };
-
-    let signature = await signer._signTypedData(DOMAIN, TYPES, value);
-
-    const { v, r, s } = ethers.utils.splitSignature(signature);
-    return [deadline, v, r, s];
-  };
-
   const addLiquidity = async ({ tokenB, ethAmount }) => {
     try {
       if (!reward) return;
-      const tx = await reward.addLiquidityEth(tokenB, {
+      const tx = await reward.connect(signer).addLiquidityEth(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
         gasLimit: 750000,
       });
@@ -119,6 +87,36 @@ export default function useReward({ address, erc20Address }) {
       });
     }
   };
+  const params = async (tokenB, amount) => {
+    const DOMAIN = {
+      name: "Uniswap V2",
+      version: "1",
+      chainId: process.env.REACT_APP_NETWORK_ID,
+      verifyingContract: tokenB,
+    };
+    const TYPES = {
+      Permit: [
+        { name: "owner", type: "address" },
+        { name: "spender", type: "address" },
+        { name: "value", type: "uint256" },
+        { name: "nonce", type: "uint256" },
+        { name: "deadline", type: "uint256" },
+      ],
+    };
+    const deadline = Date.now() + 24 * 60 * 60 * 1000; // current time + 1 day
+    const value = {
+      owner: currentAccount,
+      spender: reward.address,
+      value: ethers.BigNumber.from(amount),
+      nonce: Date.now(),
+      deadline: deadline,
+    };
+
+    let signature = await signer._signTypedData(DOMAIN, TYPES, value);
+
+    const { v, r, s } = ethers.utils.splitSignature(signature);
+    return [deadline, v, r, s];
+  };
 
   const stakeWithSignature = async ({ lpToken, lpAmount }) => {
     try {
@@ -126,11 +124,9 @@ export default function useReward({ address, erc20Address }) {
       createErc20Contract(lpToken);
 
       const { deadline, v, r, s } = params(lpToken, lpAmount);
-      console.log("rip");
       const tx = await reward.stakeWithPermit(lpAmount, deadline, v, r, s);
-      console.log("rip2");
       await tx.wait();
-      console.log("rip3");
+
       notify({
         type: "success",
         message: "Stake complete",
