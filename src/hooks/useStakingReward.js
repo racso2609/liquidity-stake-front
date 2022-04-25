@@ -6,6 +6,7 @@ import { notify } from "../utils/notify";
 import useToggle from "../hooks/useToggle";
 import useERC20 from "../hooks/useErc20";
 import { copyToClipBoard } from "../utils/generalFunctions";
+import { getContract } from "../functions/contracts";
 
 export default function useReward({ address, erc20Address }) {
   const { signer, currentAccount } = useContext(WalletContext);
@@ -115,6 +116,7 @@ export default function useReward({ address, erc20Address }) {
     let signature = await signer._signTypedData(DOMAIN, TYPES, value);
 
     const { v, r, s } = ethers.utils.splitSignature(signature);
+    console.log(v, r, s);
     return [deadline, v, r, s];
   };
 
@@ -123,8 +125,11 @@ export default function useReward({ address, erc20Address }) {
       if (!reward) return;
       createErc20Contract(lpToken);
 
-      const { deadline, v, r, s } = params(lpToken, lpAmount);
+      const [deadline, v, r, s] = await params(lpToken, lpAmount);
+      console.log("pass signature");
       const tx = await reward.stakeWithPermit(lpAmount, deadline, v, r, s);
+      console.log("pass tx");
+
       await tx.wait();
 
       notify({
@@ -203,7 +208,7 @@ export default function useReward({ address, erc20Address }) {
     try {
       if (!reward) return;
       const balance = await erc20BalanceOf();
-      console.log(balance);
+      console.log("balance", balance);
       return balance.toString();
     } catch (error) {
       return 0;
