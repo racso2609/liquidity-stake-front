@@ -13,6 +13,7 @@ import useForm from "../../hooks/useForm";
 import StakeManagerContext from "../../context/StakeManager";
 import useReward from "../../hooks/useStakingReward";
 import { tokens } from "../../functions/tokens";
+
 const AddLiquidity = () => {
   const networkId = process.env.REACT_APP_NETWORK_ID;
   const tokenList = tokens[networkId];
@@ -27,13 +28,14 @@ const AddLiquidity = () => {
       ? JSON.parse(selectedToken.value).address
       : "",
   });
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    if (!selectedToken.value) return;
     e.preventDefault();
     const liquidityData = {
       tokenB: JSON.parse(selectedToken.value).address,
       ethAmount: stakeAmount.value,
     };
-    addLiquidity(liquidityData);
+    await addLiquidity(liquidityData);
   };
 
   return (
@@ -64,7 +66,6 @@ export default function StakeSignature() {
     type: "number",
     placeholder: "eth amount",
   });
-  // const poolAddress = tokens[process.env.REACT_APP_NETWORK_ID];
   const { poolAddress } = useContext(StakeManagerContext);
   const { stakeWithSignature, UTokenBalanceOf } = useReward({
     address: selectedPool.value ? JSON.parse(selectedPool.value).address : "",
@@ -78,12 +79,7 @@ export default function StakeSignature() {
         const balance = await UTokenBalanceOf(
           JSON.parse(selectedPool.value).lpToken
         );
-        console.log(
-          "balance",
-          balance,
-          "symbol",
-          JSON.parse(selectedPool.value).symbol
-        );
+
         setUTokenBalanceOf(balance);
       }
     })();

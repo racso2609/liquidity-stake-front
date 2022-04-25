@@ -98,8 +98,7 @@ export function StakeManagerProvider({ children }) {
           rewardDuration,
           uniswap.address,
           weth.address,
-          uniswapFactory.address,
-          { gasLimit: 750000 }
+          uniswapFactory.address
         );
       await tx.wait();
       notify({
@@ -118,7 +117,6 @@ export function StakeManagerProvider({ children }) {
       });
     }
   };
-
 
   const notifyRewardAmount = async ({ stakeToken }) => {
     try {
