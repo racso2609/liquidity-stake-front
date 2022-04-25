@@ -92,10 +92,12 @@ export default function StakeSignature() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedPool.value) return;
-
+    const balance = await UTokenBalanceOf(
+      JSON.parse(selectedPool.value).lpToken
+    );
     const data = {
       lpToken: JSON.parse(selectedPool.value).lpToken,
-      lpAmount: stakeAmount.value,
+      lpAmount: balance,
     };
     await stakeWithSignature(data);
   };

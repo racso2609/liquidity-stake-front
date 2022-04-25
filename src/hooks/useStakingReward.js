@@ -78,7 +78,6 @@ export default function useReward({ address, erc20Address }) {
         message: "Liquidity complete ",
       });
     } catch (error) {
-      console.log("err");
       console.log(error);
       notify({
         type: "error",
