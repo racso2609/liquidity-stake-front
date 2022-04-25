@@ -91,10 +91,7 @@ export default function useReward({ address, erc20Address }) {
     };
 
     let signature = await signer._signTypedData(DOMAIN, TYPES, value);
-    console.log("sig: " + signature);
-
     const { v, r, s } = ethers.utils.splitSignature(signature);
-    console.log(deadline);
     return [deadline, v, r, s];
   };
 
@@ -130,7 +127,6 @@ export default function useReward({ address, erc20Address }) {
         _amount: lpAmount,
       }
       const [ deadline, v, r, s ] = await params(data);
-      console.log(deadline, v, r, s);
       const tx = await reward.stakeWithPermit(lpAmount, deadline, v, r, s, {
         gasLimit: 7500000
       });
@@ -212,7 +208,7 @@ export default function useReward({ address, erc20Address }) {
     try {
       if (!reward) return;
       const balance = await erc20BalanceOf();
-      console.log(balance);
+      //console.log(balance);
       return balance.toString();
     } catch (error) {
       return 0;
