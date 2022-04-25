@@ -46,6 +46,7 @@ export default function useReward({ address, erc20Address }) {
 
       const tx = await reward.addLiquidityAndStake(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
+        gasLimit: ethers.utils.parseEther("0.0001"),
       });
       await tx.wait();
       notify({
@@ -99,7 +100,6 @@ export default function useReward({ address, erc20Address }) {
   const addLiquidity = async ({ tokenB, ethAmount }) => {
     try {
       if (!reward) return;
-      createErc20Contract(tokenB);
       const tx = await reward.addLiquidityEth(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
         gasLimit: 750000,
