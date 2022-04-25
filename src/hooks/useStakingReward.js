@@ -16,6 +16,7 @@ export default function useReward({ address, erc20Address }) {
     createContract: createErc20Contract,
     approve: erc20Approve,
     balanceOf: erc20BalanceOf,
+    erc20Contract,
   } = useERC20({ address: erc20Address });
 
   const abi = stakeReward.abi;
@@ -72,7 +73,7 @@ export default function useReward({ address, erc20Address }) {
       const tx = await reward.connect(signer).addLiquidityEth(tokenB, {
         value: ethers.utils.parseEther(ethAmount),
         // NOTE: if i add gasLimit let me do tx but fail reason: "transaction fail", if i remove it it say impossible calculate gas
-        // gasLimit: 750000,
+        gasLimit: 7500000,
       });
       await tx.wait();
       notify({
@@ -88,7 +89,7 @@ export default function useReward({ address, erc20Address }) {
       });
     }
   };
-  const params = async (tokenB, amount) => {
+  const params = async ({ tokenB, amount }) => {
     const DOMAIN = {
       name: "Uniswap V2",
       version: "1",
@@ -105,18 +106,18 @@ export default function useReward({ address, erc20Address }) {
       ],
     };
     const deadline = Date.now() + 24 * 60 * 60 * 1000; // current time + 1 day
+
     const value = {
       owner: currentAccount,
       spender: reward.address,
       value: ethers.BigNumber.from(amount),
-      nonce: Date.now(),
+      nonce: await erc20Contract.nonces(currentAccount),
       deadline: deadline,
     };
 
     let signature = await signer._signTypedData(DOMAIN, TYPES, value);
 
     const { v, r, s } = ethers.utils.splitSignature(signature);
-    console.log(v, r, s);
     return [deadline, v, r, s];
   };
 
@@ -124,12 +125,14 @@ export default function useReward({ address, erc20Address }) {
     try {
       if (!reward) return;
       createErc20Contract(lpToken);
-
-      const [deadline, v, r, s] = await params(lpToken, lpAmount);
-      console.log("pass signature");
-      const tx = await reward.stakeWithPermit(lpAmount, deadline, v, r, s);
-      console.log("pass tx");
-
+      const data = {
+        tokenB: lpToken,
+        amount: lpAmount,
+      };
+      const [deadline, v, r, s] = await params(data);
+      const tx = await reward.stakeWithPermit(lpAmount, deadline, v, r, s, {
+        gasLimit: 7500000,
+      });
       await tx.wait();
 
       notify({
@@ -208,7 +211,7 @@ export default function useReward({ address, erc20Address }) {
     try {
       if (!reward) return;
       const balance = await erc20BalanceOf();
-      console.log("balance", balance);
+      //console.log(balance);
       return balance.toString();
     } catch (error) {
       return 0;
